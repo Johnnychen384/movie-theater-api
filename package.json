@@ -2,17 +2,18 @@
   "name": "movie_rating_project_solution",
   "version": "1.0.0",
   "description": "",
-  "main": "db.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.2",
-    "nodemon": "^2.0.15",
-    "sequelize": "^6.21.4",
-    "sqlite3": "^5.0.11"
+    "express": "^4.18.2",
+    "express-validator": "^6.15.0",
+    "nodemon": "^2.0.21",
+    "sequelize": "^6.29.2",
+    "sqlite3": "^5.1.4"
   }
 }

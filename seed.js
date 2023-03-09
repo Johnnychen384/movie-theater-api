@@ -16,7 +16,6 @@ const seed = async () => {
     const showSeedPath = path.join(__dirname, 'shows.json'); //get the path to Show.json file
     const userSeedPath = path.join(__dirname, 'users.json')
 
-
     const buffer = await fs.readFile(showSeedPath); //asynchronously reads the content in this file
     const userBuffer = await fs.readFile(userSeedPath);
 
@@ -33,6 +32,8 @@ const seed = async () => {
 
     console.log("Shows and User database info populated!")
 }
+
+seed()
 
 //export my seed function
 module.exports = seed;
