@@ -77,7 +77,7 @@ router.put("/:id/watched", async (req, res) => {
         if(targetShow.length > 0){
             await targetShow[0].update({rating: rating})
             res.status(200).json(watchedShow)
-            
+
         } else {
             res.status(200).send("Could not find specific show.")
         }
@@ -86,6 +86,27 @@ router.put("/:id/watched", async (req, res) => {
     } catch(err) {
         console.error(err)
         res.status(404).send("There is a problem with finding User.")
+    }
+})
+
+
+router.put("/:showid/updates", async (req, res) => {
+    try {
+        const targetShow = await Show.findByPk(req.params.showid)
+        if(!targetShow) res.status(200).send("Wrong show id")
+        
+        if(targetShow.status === "canceled") {
+            await targetShow.update({status: "on-going"})
+            
+        } else {
+            await targetShow.update({status: "canceled"})
+        }
+
+        res.status(200).json(targetShow)
+
+    } catch(err) {
+        console.error(err)
+        res.status(404).send("There is a problem with finding show.")
     }
 })
 
