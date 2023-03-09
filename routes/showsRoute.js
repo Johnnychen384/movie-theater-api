@@ -27,7 +27,7 @@ router.get("/:id", async (req, res) => {
     try{
         const targetShows = await Show.findByPk(req.params.id)
         
-        if(Object.keys( targetShows).includes("dataValues")){
+        if(Object.keys(targetShows).includes("dataValues")){
             res.status(200).json( targetShows)
         } else {
             res.status(200).send("No Show Found.")
@@ -39,6 +39,28 @@ router.get("/:id", async (req, res) => {
         res.status(404).send("There is a problem with finding target show.")
     }
 
+})
+
+
+router.get("/genres/:genre", async (req, res) => {
+    try{
+        const targetGenreArr = await Show.findAll({
+            where: {
+                genre: req.params.genre
+            }
+        })
+        
+        if(targetGenreArr.length > 0){
+            res.status(200).json(targetGenreArr)
+        } else {
+            res.status(200).send("No genre found.")
+        }
+
+
+    } catch(err) {
+        console.error(err)
+        res.status(404).send("There is a problem with finding genre.")
+    }
 })
 
 
