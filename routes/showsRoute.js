@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const { User, Show }= require("../models/index")
+const { check, validationResult } = require('express-validator')
+
 
 router.get("/", async (req, res) => {
     
@@ -64,16 +66,26 @@ router.get("/genres/:genre", async (req, res) => {
 })
 
 
-router.put("/:id/watched", async (req, res) => {
+router.put("/:id/watched", [checked("rating").not().isEmpty().trim()], async (req, res) => {
     try{
+        // error validation 
+        const errors = validationResult(req) // 
+        
+        if(!errors.isEmpty()) {
+            return res.status(400).json({errors: errors.array()})
+        }
+
+        // After validated ===========================
         const {title, rating} = req.body
         const targetUser = await User.findByPk(req.params.id)
         const watchedShow = await targetUser.getShows()
 
+        // Check if watchedShows has any shows the target user has watched
         if(watchedShow.length < 1) res.status(200).send("No shows found.")
 
         const targetShow = watchedShow.filter(show => show.title === title)
 
+        // Checks to make sure that targetShow contains a show with the title we are looking for.
         if(targetShow.length > 0){
             await targetShow[0].update({rating: rating})
             res.status(200).json(watchedShow)
