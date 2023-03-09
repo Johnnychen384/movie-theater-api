@@ -110,4 +110,20 @@ router.put("/:showid/updates", async (req, res) => {
     }
 })
 
+router.delete("/:id", async (req, res) => {
+    try {
+        const targetShow = await Show.findByPk(req.params.id)
+        if(!targetShow) res.status(200).send("Wrong show id")
+        
+        await targetShow.destroy()
+        const allShows = await Show.findAll()
+
+        res.status(200).json(allShows)
+
+    } catch(err) {
+        console.error(err)
+        res.status(404).send("There is a problem with finding show.")
+    }
+})
+
 module.exports = router
