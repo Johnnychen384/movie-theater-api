@@ -64,4 +64,29 @@ router.get("/genres/:genre", async (req, res) => {
 })
 
 
+router.put("/:id/watched", async (req, res) => {
+    try{
+        const {title, rating} = req.body
+        const targetUser = await User.findByPk(req.params.id)
+        const watchedShow = await targetUser.getShows()
+
+        if(watchedShow.length < 1) res.status(200).send("No shows found.")
+
+        const targetShow = watchedShow.filter(show => show.title === title)
+
+        if(targetShow.length > 0){
+            await targetShow[0].update({rating: rating})
+            res.status(200).json(watchedShow)
+            
+        } else {
+            res.status(200).send("Could not find specific show.")
+        }
+        
+
+    } catch(err) {
+        console.error(err)
+        res.status(404).send("There is a problem with finding User.")
+    }
+})
+
 module.exports = router
