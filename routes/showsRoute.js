@@ -22,6 +22,24 @@ router.get("/", async (req, res) => {
 })
 
 
+router.get("/:id", async (req, res) => {
+    
+    try{
+        const targetShows = await Show.findByPk(req.params.id)
+        
+        if(Object.keys( targetShows).includes("dataValues")){
+            res.status(200).json( targetShows)
+        } else {
+            res.status(200).send("No Show Found.")
+        }
+
+
+    } catch(err) {
+        console.error(err)
+        res.status(404).send("There is a problem with finding target show.")
+    }
+
+})
 
 
 module.exports = router
